@@ -1,0 +1,10 @@
+type Query {
+    getContacts: [Contact!]!
+}
+
+type Contact {
+    id: ID!
+    name: String!
+    photoUrl: String!
+    title: String!
+}

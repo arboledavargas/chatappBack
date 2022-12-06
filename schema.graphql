@@ -1,0 +1,56 @@
+type Query {
+    getGroups: [Group!]!
+    getAllMessages: [Message]!
+    getMessagesByUser(userId:ID!): [Message]!
+    getMessagesByGroup(groupId:ID!): [Message]!
+}
+
+type Mutation {
+    postMessage(message: PostMessageInput):PostMessageResponse
+    readMessages(messages: ReadMessagesInput):ReadMessagesResponse
+}
+
+input PostMessageInput {
+    to: ID!
+    message: String!
+}
+
+input ReadMessagesInput {
+    messages:[ID!]!
+}
+
+type PostMessageResponse {
+    status: Int!
+    success: Boolean!
+    error: String
+    message: Message
+}
+
+type ReadMessagesResponse {
+    status: Int!
+    success: Boolean!
+    error: String
+}
+
+type Group {
+    id: ID!
+    name: String!
+    photoUrl: String!
+    members: [Contact!]!
+}
+
+type Viewer {
+    id: ID!
+    name: String!
+    photoUrl: String!
+    title: String!
+}
+
+type Message {
+    id: ID!
+    from: ID!
+    to: ID!
+    dateTimeIso: String!
+    message: String!
+    isRead: Boolean!
+}
