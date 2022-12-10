@@ -1,8 +1,10 @@
 type Query {
-    getGroups: [Group!]!
-    getAllMessages: [Message]!
-    getMessagesByUser(userId:ID!): [Message]!
-    getMessagesByGroup(groupId:ID!): [Message]!
+    group(groupId:ID!): Group
+    contact(contactId:ID!): Contact
+    messagesByGroup(groupId:ID!): [Message]!
+    messagesByContact(contactId:ID!): [Message]!
+    viewerContacts: [Contact!]!
+    viewerGroups: [Group!]!
 }
 
 type Mutation {
@@ -37,6 +39,7 @@ type Group {
     name: String!
     photoUrl: String!
     members: [Contact!]!
+    messages: [Message!]!
 }
 
 type Viewer {
@@ -49,8 +52,16 @@ type Viewer {
 type Message {
     id: ID!
     from: ID!
-    to: ID!
+    to_contact: ID
+    to_group: ID
     dateTimeIso: String!
     message: String!
-    isRead: Boolean!
+}
+
+type Contact {
+    id: ID!
+    name: String!
+    photoUrl: String!
+    title: String!
+    messages: [Message!]!
 }

@@ -18,15 +18,17 @@ export class ReadMessagesInput {
 }
 
 export abstract class IQuery {
-    abstract getGroups(): Group[] | Promise<Group[]>;
+    abstract group(groupId: string): Nullable<Group> | Promise<Nullable<Group>>;
 
-    abstract getAllMessages(): Nullable<Message>[] | Promise<Nullable<Message>[]>;
+    abstract contact(contactId: string): Nullable<Contact> | Promise<Nullable<Contact>>;
 
-    abstract getMessagesByUser(userId: string): Nullable<Message>[] | Promise<Nullable<Message>[]>;
+    abstract messagesByGroup(groupId: string): Nullable<Message>[] | Promise<Nullable<Message>[]>;
 
-    abstract getMessagesByGroup(groupId: string): Nullable<Message>[] | Promise<Nullable<Message>[]>;
+    abstract messagesByContact(contactId: string): Nullable<Message>[] | Promise<Nullable<Message>[]>;
 
-    abstract getContacts(): Contact[] | Promise<Contact[]>;
+    abstract viewerContacts(): Contact[] | Promise<Contact[]>;
+
+    abstract viewerGroups(): Group[] | Promise<Group[]>;
 }
 
 export abstract class IMutation {
@@ -53,6 +55,7 @@ export class Group {
     name: string;
     photoUrl: string;
     members: Contact[];
+    messages: Message[];
 }
 
 export class Viewer {
@@ -65,10 +68,10 @@ export class Viewer {
 export class Message {
     id: string;
     from: string;
-    to: string;
+    to_contact?: Nullable<string>;
+    to_group?: Nullable<string>;
     dateTimeIso: string;
     message: string;
-    isRead: boolean;
 }
 
 export class Contact {
@@ -76,6 +79,7 @@ export class Contact {
     name: string;
     photoUrl: string;
     title: string;
+    messages: Message[];
 }
 
 type Nullable<T> = T | null;
