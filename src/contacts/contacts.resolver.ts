@@ -1,23 +1,19 @@
-import { Resolver, Query, ResolveField } from "@nestjs/graphql";
+import { Resolver, Query, ResolveField, Args } from "@nestjs/graphql";
 import { Group, Contact, Message } from "../graphql";
-
+import { GetContactsByIdUseCase } from "./domain/getContactsById.usecase";
 @Resolver('Contact')
 export class ContactsResolver {
 
-    constructor(){
+    constructor( private getContactsByIDUseCase: GetContactsByIdUseCase){
 
     }
 
     @Query()
-    async contact(): Promise<Contact>{
-        return {
-            id: "id",
-            name: "name de prueba",
-            photoUrl: "url de prueba",
-            title: "title de prueba",
-            messages:[]
-        }
+    async contact(@Args('contactId') contactId:string): Promise<Contact>{
+
+        const result = await this.getContactsByIDUseCase.execute(contactId)
         
+        return result
     }
 
     @Query()
