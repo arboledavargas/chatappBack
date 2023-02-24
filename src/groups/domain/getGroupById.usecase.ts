@@ -1,15 +1,20 @@
-import { Injectable } from "@nestjs/common";
-import { Group } from "../../graphql";
+import { Injectable } from '@nestjs/common';
+import { Group } from '../../graphql';
 
 @Injectable()
 export class GetGroupByIdUsecase {
-    async execute(groupId:string):Promise<Group> {
-        return {
-            id:"",
-            members:[],
-            messages:[],
-            name:"",
-            photoUrl:""
-        }
-    }
+  async execute(groupId: string): Promise<Group> {
+    return {
+      id: '',
+      members: [],
+      name: '',
+      photoUrl: '',
+      conversation: {
+        id: '',
+        lectures: [],
+        members: [],
+        messages: [],
+      },
+    };
+  }
 }

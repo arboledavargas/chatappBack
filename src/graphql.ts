@@ -17,26 +17,6 @@ export class ReadMessagesInput {
     messages: string[];
 }
 
-export abstract class IQuery {
-    abstract group(groupId: string): Nullable<Group> | Promise<Nullable<Group>>;
-
-    abstract contact(contactId: string): Nullable<Contact> | Promise<Nullable<Contact>>;
-
-    abstract messagesByGroup(groupId: string): Nullable<Message>[] | Promise<Nullable<Message>[]>;
-
-    abstract messagesByContact(contactId: string): Nullable<Message>[] | Promise<Nullable<Message>[]>;
-
-    abstract viewerContacts(): Contact[] | Promise<Contact[]>;
-
-    abstract viewerGroups(): Group[] | Promise<Group[]>;
-}
-
-export abstract class IMutation {
-    abstract postMessage(message?: Nullable<PostMessageInput>): Nullable<PostMessageResponse> | Promise<Nullable<PostMessageResponse>>;
-
-    abstract readMessages(messages?: Nullable<ReadMessagesInput>): Nullable<ReadMessagesResponse> | Promise<Nullable<ReadMessagesResponse>>;
-}
-
 export class PostMessageResponse {
     status: number;
     success: boolean;
@@ -55,7 +35,7 @@ export class Group {
     name: string;
     photoUrl: string;
     members: Contact[];
-    messages: Message[];
+    conversation: Conversation;
 }
 
 export class Viewer {
@@ -67,9 +47,8 @@ export class Viewer {
 
 export class Message {
     id: string;
-    from: string;
-    to_contact?: Nullable<string>;
-    to_group?: Nullable<string>;
+    from: Contact;
+    to: Conversation;
     dateTimeIso: string;
     message: string;
 }
@@ -79,7 +58,36 @@ export class Contact {
     name: string;
     photoUrl: string;
     title: string;
+}
+
+export class Conversation {
+    id: string;
     messages: Message[];
+    lectures: Lecture[];
+    members: Contact[];
+}
+
+export class Lecture {
+    id: string;
+    user: Contact;
+    Conversation: Conversation;
+    dateTimeIso?: Nullable<string>;
+}
+
+export abstract class IQuery {
+    abstract group(groupId: string): Nullable<Group> | Promise<Nullable<Group>>;
+
+    abstract contact(contactId: string): Nullable<Contact> | Promise<Nullable<Contact>>;
+
+    abstract viewerContacts(): Contact[] | Promise<Contact[]>;
+
+    abstract viewerGroups(): Group[] | Promise<Group[]>;
+}
+
+export abstract class IMutation {
+    abstract postMessage(message?: Nullable<PostMessageInput>): Nullable<PostMessageResponse> | Promise<Nullable<PostMessageResponse>>;
+
+    abstract readMessages(messages?: Nullable<ReadMessagesInput>): Nullable<ReadMessagesResponse> | Promise<Nullable<ReadMessagesResponse>>;
 }
 
 type Nullable<T> = T | null;

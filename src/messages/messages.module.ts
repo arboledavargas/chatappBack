@@ -1,9 +1,7 @@
-import { Module } from "@nestjs/common";
-import { MessagesResolver } from "./messages.resolver";
+import { Module } from '@nestjs/common';
+import { MessagesResolver } from './messages.resolver';
 
 @Module({
-    providers:[MessagesResolver]
+  providers: [MessagesResolver],
 })
-export class MessagesModule {
-
-}
+export class MessagesModule {}

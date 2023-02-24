@@ -1,67 +1,77 @@
-type Query {
-    group(groupId:ID!): Group
-    contact(contactId:ID!): Contact
-    messagesByGroup(groupId:ID!): [Message]!
-    messagesByContact(contactId:ID!): [Message]!
-    viewerContacts: [Contact!]!
-    viewerGroups: [Group!]!
-}
-
-type Mutation {
-    postMessage(message: PostMessageInput):PostMessageResponse
-    readMessages(messages: ReadMessagesInput):ReadMessagesResponse
-}
-
 input PostMessageInput {
-    to: ID!
-    message: String!
+  to: ID!
+  message: String!
 }
 
 input ReadMessagesInput {
-    messages:[ID!]!
+  messages: [ID!]!
 }
 
 type PostMessageResponse {
-    status: Int!
-    success: Boolean!
-    error: String
-    message: Message
+  status: Int!
+  success: Boolean!
+  error: String
+  message: Message
 }
 
 type ReadMessagesResponse {
-    status: Int!
-    success: Boolean!
-    error: String
+  status: Int!
+  success: Boolean!
+  error: String
 }
 
 type Group {
-    id: ID!
-    name: String!
-    photoUrl: String!
-    members: [Contact!]!
-    messages: [Message!]!
+  id: ID!
+  name: String!
+  photoUrl: String!
+  members: [Contact!]!
+  conversation: Conversation!
 }
 
 type Viewer {
-    id: ID!
-    name: String!
-    photoUrl: String!
-    title: String!
+  id: ID!
+  name: String!
+  photoUrl: String!
+  title: String!
 }
 
 type Message {
-    id: ID!
-    from: ID!
-    to_contact: ID
-    to_group: ID
-    dateTimeIso: String!
-    message: String!
+  id: ID!
+  from: Contact!
+  to: Conversation!
+  dateTimeIso: String!
+  message: String!
 }
 
 type Contact {
-    id: ID!
-    name: String!
-    photoUrl: String!
-    title: String!
-    messages: [Message!]!
+  id: ID!
+  name: String!
+  photoUrl: String!
+  title: String!
+}
+
+type Conversation {
+  id: ID!
+  messages: [Message!]!
+  lectures: [Lecture!]!
+  members: [Contact!]!
+}
+
+type Lecture {
+  id: ID!
+  user: Contact!
+  Conversation: Conversation!
+  dateTimeIso: String
+}
+
+type Query {
+  group(groupId: ID!): Group
+  contact(contactId: ID!): Contact
+  viewerContacts: [Contact!]!
+  viewerGroups: [Group!]!
+}
+
+type Mutation {
+  postMessage(message: PostMessageInput): PostMessageResponse
+  readMessages(messages: ReadMessagesInput): ReadMessagesResponse
 }

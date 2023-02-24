@@ -1,17 +1,18 @@
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
-import { GraphQLModule } from '@nestjs/graphql'
-import { ApolloDriverConfig, ApolloDriver } from "@nestjs/apollo";
-import { join } from 'path';
+import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
-import { ContactsResolver } from "./contacts/contacts.resolver";
-import { MessagesResolver } from "./messages/messages.resolver";
-import { GroupsResolver } from "./groups/groups.resolver";
-import { ContactsModule } from "./contacts/contacts.module";
-import { GroupsModule } from "./groups/groups.module";
+import { join } from 'path';
+import { AuthModule } from './auth/auth.module';
+import { ContactsModule } from './contacts/contacts.module';
+import { GroupsModule } from './groups/groups.module';
+import { MessagesModule } from './messages/messages.module';
+import { MessagesResolver } from './messages/messages.resolver';
 @Module({
   imports: [
+    AuthModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
-      driver:ApolloDriver,
+      driver: ApolloDriver,
       typePaths: ['./**/*.graphql'],
       playground: false,
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
@@ -21,9 +22,10 @@ import { GroupsModule } from "./groups/groups.module";
       },
     }),
     ContactsModule,
-    GroupsModule
+    GroupsModule,
+    MessagesModule,
   ],
   controllers: [],
-  providers: [ContactsResolver, MessagesResolver, GroupsResolver],
+  providers: [MessagesResolver],
 })
 export class AppModule {}
